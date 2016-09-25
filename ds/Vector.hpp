@@ -48,7 +48,7 @@ class Vector
 			return *this;
 		}
 
-		static const int SPARE_CAPACITY = 2;
+		static const int SPARE_CAPACITY = 1;
 
 	public:
 
