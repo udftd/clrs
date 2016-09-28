@@ -1,6 +1,9 @@
 #ifndef _FY_VECTOR_HPP_
 #define _FY_VECTOR_HPP_
 
+#include "exceptions.hpp"
+
+#include <utility>
 #include <algorithm>
 
 template <typename T>
@@ -77,8 +80,11 @@ class Vector
 
 		const T& operator [] (std::size_t position)const 
 		{
-			// TODO bound checking
-			return data[position];
+			if (position < 0 || position >= theSize) {
+				throw ArrayOutOfBound{};
+			}
+			if (position >= 0 && position < theSize)
+				return data[position];
 		}
 		T& operator [] (std::size_t position)
 		{
@@ -102,14 +108,14 @@ class Vector
 		}
 		void pop_back()
 		{
-			// TODO bound checking
 			if (empty())
 				return;
 			--theSize;
 		}
 		const T& back()const
 		{
-			// TODO bound checking
+			if (empty())
+				throw Underflow{};
 			return data[theSize - 1];
 		}
 
