@@ -7,6 +7,8 @@ template <typename T>
 class List;
 template <typename  T>
 class const_iterator;
+template <typename T>
+class iterator;
 
 template <typename T>
 class Node
@@ -25,6 +27,7 @@ class Node
 		Node*	next;
 		friend class List<T>;
 		friend class const_iterator<T>;
+		friend class iterator<T>;
 };
 
 template <typename T>
@@ -37,7 +40,7 @@ class const_iterator
 
 		const T& operator * ()const
 		{
-			return retrive();
+			return retrieve();
 		}
 
 		const_iterator & operator ++ ()
@@ -45,10 +48,11 @@ class const_iterator
 			current = current->next;
 			return *this;
 		}
-		const_iterator & operator -- ()
+		const_iterator & operator -- (int)
 		{
-			current = current->prev;
-			return *this;
+			const_iterator old = *this;
+			--(*this);
+			return *old;
 		}
 
 		bool operator == (const const_iterator& rhs)const
@@ -63,7 +67,7 @@ class const_iterator
 
 	protected:
 		Node<T>* current;
-		T& retrive()const
+		T& retrieve()const
 		{
 		   	return current->data; 
 		}
@@ -95,6 +99,11 @@ class iterator: public const_iterator<T>
 		iterator operator ++ ()
 		{
 			this->current = this->current->next;
+			return *this;
+		}
+		iterator& operator -- ()
+		{
+			this->current = this->current->prev;
 			return *this;
 		}
 		iterator operator -- (int)
@@ -192,6 +201,7 @@ class List
 			while(!empty())
 				pop_front();
 		}
+
 		int size()const
 		{
 			return theSize;
@@ -223,7 +233,7 @@ class List
 		}
 		void pop_front()
 		{
-			erase(end());
+			erase(begin());
 		}
 		
 
